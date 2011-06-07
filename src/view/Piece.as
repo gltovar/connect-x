@@ -21,6 +21,15 @@ package view
 				case 1:
 					_pieceColor = 0x0000FF;
 					break;
+				case 2:
+					_pieceColor = 0xFF00FF;
+					break;
+				case 3:
+					_pieceColor = 0x00FF00;
+					break;
+				case 4:
+					_pieceColor = 0x00FFFF;
+					break;
 				default:
 					_pieceColor = 0;
 					break;

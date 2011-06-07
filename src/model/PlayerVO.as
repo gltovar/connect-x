@@ -4,6 +4,8 @@ package model
 
 	public class PlayerVO implements IModel
 	{
+		public static const PLAYER_NAME_MIN:int = 3;
+		public static const PLAYER_NAME_MAX:int = 10;
 		
 		public function PlayerVO()
 		{

@@ -161,14 +161,12 @@ package view
 		
 		private function enableCurrentMenuUI():void
 		{
-			_menuUIHistory[0].mouseEnabled = true;
-			_menuUIHistory[0].mouseChildren = true;
+			_menuUIHistory[0].enabled = true;
 		}
 		
 		private function disableCurrentMenuUI():void
 		{
-			_menuUIHistory[0].mouseEnabled = false;
-			_menuUIHistory[0].mouseChildren = false;
+			_menuUIHistory[0].enabled = false;
 		}
 	}
 }

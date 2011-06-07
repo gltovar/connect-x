@@ -52,8 +52,8 @@ package controller
 			{
 				piece = new PieceVO();
 				piece.pieceId = i.toString();
-				piece.pieceOwnerId = String( i%2 );
-				_gameVO.players[ i%2 ].pieces.push(piece.pieceId);
+				piece.pieceOwnerId = String( i% _gameVO.players.length );
+				_gameVO.players[ i%_gameVO.players.length ].pieces.push(piece.pieceId);
 				//piece.piecePosition = new Point( int( Math.random() * (_gameVO.columns - .01) ), int( Math.random() * (_gameVO.rows - .01) ) );
 				piece.piecePosition = new Point(-1,-1);
 				_gameVO.pieces.push( piece );

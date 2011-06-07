@@ -4,6 +4,9 @@ package model
 
 	public class GameVO implements IModel
 	{
+		public static const PLAYERS_MIN:int = 2;
+		public static const PLAYERS_MAX:int = 9;
+		
 		public static const ROWS_MAX:int = 20;
 		
 		public static const COLUMNS_MAX:int = 20;

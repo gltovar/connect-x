@@ -14,7 +14,7 @@ package view
 			with( graphics )
 			{
 				lineStyle( 1, 0xFFFFFF );
-				beginFill( 0x55FF55, 1 );
+				beginFill( 0x005500, 1 );
 				drawRect( -10, -10, 20, 20);
 				endFill();
 			}
