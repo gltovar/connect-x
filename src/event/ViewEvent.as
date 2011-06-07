@@ -4,6 +4,8 @@ package event
 	
 	public class ViewEvent extends Event
 	{
+		public static const PERFORM_ACTION:String = "performAction";
+		
 		public static const NEW_SINGLE_PLAYER_GAME:String = "newSinglePlayerGame";
 		public static const NEW_LOCAL_MULTIPLAYER_GAME:String = "newLocalMultiplayerGame";
 		public static const NEW_ONLINE_MULTIPLAYER_GAME:String = "newRemoteMultiplayerGame";
@@ -14,20 +16,17 @@ package event
 		public static const SAVE_GAME_TO_SHARED_OBJECT:String = "saveGameToSharedObject";
 		public static const SAVE_GAME_TO_EXTERNAL_FILE:String = "saveGameToExternalFile";
 
+		private var _action:String;
+		public function get action():String { return _action; }
 		
-		public function ViewEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function ViewEvent(type:String, p_action:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
-			
+			_action = p_action;
 			super(type, bubbles, cancelable);
 		}
 		
-		public function get gameState():GameState
-		{
-			return _gameState;
-		}
-		
 		public override function clone():Event {
-			return new ViewEvent( type, bubbles, cancelable );
+			return new ViewEvent( type, action, bubbles, cancelable );
 		}
 		
 		public override function toString():String{

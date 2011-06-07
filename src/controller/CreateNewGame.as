@@ -44,22 +44,7 @@ package controller
 		}
 		
 		override public function startController():void
-		{
-			_gameVO.rows = 10;
-			_gameVO.columns = 12;
-			_gameVO.winningConnectionQuantity = 5;
-			_gameVO.pieces = new Vector.<PieceVO>;
-		
-			_gameVO.players = new Vector.<PlayerVO>;
-			_gameVO.players.push( new PlayerVO() );
-			_gameVO.players.push( new PlayerVO() );
-			
-			_gameVO.players[0].playerId = '0';
-			_gameVO.players[0].playerName = 'player1';
-			_gameVO.players[0].pieces = new Vector.<String>;
-			_gameVO.players[1].playerId = '1';
-			_gameVO.players[1].playerName = 'player2';
-			_gameVO.players[1].pieces = new Vector.<String>;
+		{	
 			
 			var piece:PieceVO;
 			var i:int = _gameVO.rows * _gameVO.columns;

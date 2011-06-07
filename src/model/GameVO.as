@@ -4,6 +4,13 @@ package model
 
 	public class GameVO implements IModel
 	{
+		public static const ROWS_MAX:int = 20;
+		
+		public static const COLUMNS_MAX:int = 20;
+		
+		public static const WINNING_CONNECTION_QUANTITY_MIN:int = 3;
+		public static const WINNING_CONNECTION_QUANTITY_MAX:int = 9;
+		
 		public function GameVO()
 		{
 		}
@@ -21,6 +28,7 @@ package model
 		}
 		public function set winningConnectionQuantity(value:int):void
 		{
+			value = Math.min( Math.max(value, WINNING_CONNECTION_QUANTITY_MIN), WINNING_CONNECTION_QUANTITY_MAX);
 			_winningConnectionQuantity = value;
 		}
 
@@ -57,6 +65,7 @@ package model
 		}
 		public function set rows(value:int):void
 		{
+			value = Math.min( Math.max(value, WINNING_CONNECTION_QUANTITY_MIN), ROWS_MAX )
 			_rows = value;
 		}
 
@@ -66,6 +75,7 @@ package model
 		}
 		public function set columns(value:int):void
 		{
+			value = Math.min( Math.max(value, WINNING_CONNECTION_QUANTITY_MIN), COLUMNS_MAX );
 			_columns = value;
 		}
 

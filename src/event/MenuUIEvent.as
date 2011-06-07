@@ -4,6 +4,7 @@ package event
 	
 	public class MenuUIEvent extends Event
 	{
+		
 		public static const NAVIGATE:String = "menuUINavigate";
 		
 		public static const TO_MAIN_MENU:String = "navigateToMainMenu";
@@ -12,6 +13,7 @@ package event
 		public static const TO_OPTIONS_MENU:String = "navigateToOptionsMenus";
 		public static const TO_NEW_LOCAL_MULTIPLAYER_MENU:String = "navigateToNewLocalMultiplayerMenu";
 		public static const TO_PREVIOUS_MENU_UI:String = "navigateToPreviousMenuUI";
+		public static const TO_HIDDEN:String = "navigateToHidden";
 		
 		private var _navigationDestination:String;
 		public function get navigationDestination():String { return _navigationDestination; }

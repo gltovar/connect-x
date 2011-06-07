@@ -8,6 +8,7 @@ package view
 	import com.greensock.easing.Quad;
 	
 	import event.MenuUIEvent;
+	import event.ViewEvent;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -74,11 +75,17 @@ package view
 			for each(menuUI in _menuUIs)
 			{
 				menuUI.addEventListener( MenuUIEvent.NAVIGATE, onMenuUINavigate, false, 0, true);
+				menuUI.addEventListener( ViewEvent.PERFORM_ACTION, eventForward, false, 0, true);
 			}
 			
 			_menuContainer.addChild( _mainMenuUI );
 			_menuUIHistory.unshift( _mainMenuUI );
 			
+		}
+		
+		private function eventForward( e:ViewEvent ):void
+		{
+			dispatchEvent( e.clone() );
 		}
 		
 		private function onMenuUINavigate( e:MenuUIEvent ):void
@@ -104,10 +111,21 @@ package view
 					_menuUIHistory.shift()
 					startMenuTransition(_menuUIHistory[0], MENU_ROTATION_LEFT, false );
 					break;
+				case MenuUIEvent.TO_HIDDEN:
+					hideMenu();
+					break;
 				default:
 					
 					break;
 			}
+		}
+		
+		private function hideMenu():void
+		{
+			disableCurrentMenuUI();
+			_menuUIHistory = new Vector.<AbstractMenuUI>;
+			
+			TweenMax.to( _menuContainer, .5, {rotationY:_menuContainer.rotationY +  90, ease:Quad.easeIn, onComplete: removeMenuContainerChildren } );
 		}
 		
 		private function startMenuTransition( p_menuToShow:AbstractMenuUI, p_menuRotationDirection:int, p_addBreadCrumb:Boolean = true ):void
@@ -127,13 +145,18 @@ package view
 		private function updateCurrentMenuContainer( p_menuToShow:AbstractMenuUI, p_menuRotationDirection:int ):void
 		{
 			_menuContainer.rotationY -= p_menuRotationDirection * 180;
+			removeMenuContainerChildren();
+			
+			_menuContainer.addChild( p_menuToShow );
+			TweenMax.to( _menuContainer, .5, {rotationY: _menuContainer.rotationY + (p_menuRotationDirection * 90), ease: Quad.easeOut, onComplete: enableCurrentMenuUI} );
+		}
+		
+		private function removeMenuContainerChildren():void
+		{
 			while(_menuContainer.numChildren)
 			{
 				_menuContainer.removeChildAt(0);
 			}
-			
-			_menuContainer.addChild( p_menuToShow );
-			TweenMax.to( _menuContainer, .5, {rotationY: _menuContainer.rotationY + (p_menuRotationDirection * 90), ease: Quad.easeOut, onComplete: enableCurrentMenuUI} );
 		}
 		
 		private function enableCurrentMenuUI():void

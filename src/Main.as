@@ -5,6 +5,7 @@ package
 	import controller.HandleLocalMultiplayerGame;
 	
 	import event.ControllerEvent;
+	import event.ViewEvent;
 	
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
@@ -20,6 +21,8 @@ package
 	
 	import model.GameState;
 	import model.GameVO;
+	import model.PieceVO;
+	import model.PlayerVO;
 	
 	import view.GameLayer;
 	import view.HUDLayer;
@@ -63,13 +66,35 @@ package
 			
 		}
 		
+		private function defaultGameVO():void
+		{
+			_gameVO = new GameVO();
+			_gameVO.rows = 6;
+			_gameVO.columns = 7;
+			_gameVO.winningConnectionQuantity = 4;
+			
+			_gameVO.pieces = new Vector.<PieceVO>;
+			
+			_gameVO.players = new Vector.<PlayerVO>;
+			_gameVO.players.push( new PlayerVO() );
+			_gameVO.players.push( new PlayerVO() );
+			
+			_gameVO.players[0].playerId = '0';
+			_gameVO.players[0].playerName = 'player1';
+			_gameVO.players[0].pieces = new Vector.<String>;
+			_gameVO.players[1].playerId = '1';
+			_gameVO.players[1].playerName = 'player2';
+			_gameVO.players[1].pieces = new Vector.<String>;
+		}
+		
 		private function init():void
 		{	
 			stage.frameRate = 60;
 			
 			_gameStateControllerStack = new Vector.<AbstractController>;
 			
-			_gameVO = new GameVO();
+			defaultGameVO();
+			
 			_gameLayer = new GameLayer();
 			_menuLayer = new MenuLayer(_gameVO);
 			_hudLayer = new HUDLayer();
@@ -78,8 +103,13 @@ package
 			_gameLayer.x = 30;
 			_gameLayer.y = 30;
 			
+			_gameLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
+			
 			addChild( _hudLayer ); 
 			addChild( _menuLayer );
+			
+			_hudLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
+			_menuLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
 			
 			_gameState = GameState.INIT;
 			
@@ -91,7 +121,7 @@ package
 		
 		private function initGameControllers():void
 		{
-			queueNewState( GameState.CREATE_NEW_GAME );
+			//queueNewState( GameState.CREATE_NEW_GAME );
 		}
 		
 		private function gameLoop(e:Event):void
@@ -109,6 +139,16 @@ package
 			queueNewState( e.gameState );
 		}
 		
+		private function onPerformActionRequest(e:ViewEvent):void
+		{
+			switch( e.action )
+			{
+				case ViewEvent.NEW_LOCAL_MULTIPLAYER_GAME:
+					queueNewState( GameState.CREATE_NEW_GAME );
+					break;
+			}
+		}
+		
 		private function queueNewState(p_gameState:GameState):void
 		{
 			if( p_gameState != null )
@@ -120,6 +160,8 @@ package
 				_gameStateControllerStack.push( tempController );
 			}
 		}
+		
+		
 		
 		private function getAbstractControllerFromState(p_gameState:GameState):AbstractController
 		{

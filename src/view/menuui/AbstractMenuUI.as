@@ -24,6 +24,25 @@ package view.menuui
 		protected var _gameVO:GameVO;
 		protected var _menuUI:Component;
 		protected var _config:MinimalConfigurator;
+		protected var _enabled:Boolean;
+		
+		public function set enabled(value:Boolean):void
+		{
+			_enabled = value;
+			
+			if(_enabled)
+			{
+				mouseChildren = true;
+				mouseEnabled = true;
+			}
+			else
+			{
+				mouseChildren = false;
+				mouseEnabled = false;
+			}
+			
+		}
+		public function get enabled():Boolean{return _enabled;}
 		
 		public function AbstractMenuUI(p_gameVO:GameVO)
 		{

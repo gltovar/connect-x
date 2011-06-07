@@ -251,7 +251,7 @@ package controller
 			
 			var row:int = -1;
 			
-			while( row+1 < _boardGrid.length && _boardGrid[p_slotColumn][row+1] == '-1' )
+			while( row+1 < _boardGrid[p_slotColumn].length && _boardGrid[p_slotColumn][row+1] == '-1' )
 			{
 				row++;
 			}

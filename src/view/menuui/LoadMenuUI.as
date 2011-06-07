@@ -29,8 +29,8 @@ package view.menuui
 		{
 			super.render(p_xml);
 			
-			addNavigationPushButtonEventListenerFromPushButtonId( 'loadFromSharedObject' );
-			addNavigationPushButtonEventListenerFromPushButtonId( 'loadExternalFile' );
+			//addNavigationPushButtonEventListenerFromPushButtonId( 'loadFromSharedObject' );
+			//addNavigationPushButtonEventListenerFromPushButtonId( 'loadExternalFile' );
 			addNavigationPushButtonEventListenerFromPushButtonId( 'loadGameMenuToPreviousMenu' );
 		}
 	}
