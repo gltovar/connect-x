@@ -200,6 +200,8 @@ package controller
 				row = 0;
 				column++;
 			}
+			
+			_gameLayer.setGameBounds();
 		}
 		
 		
@@ -240,6 +242,7 @@ package controller
 					{
 						/// WINNER!
 						trace('found a winner!');
+						_gameLayer.updateOutputLabel( _gameVO.players[int(p_pieceVO.pieceOwnerId)].playerName + " has won!");
 					}
 				}
 			}
@@ -263,7 +266,7 @@ package controller
 				_boardGrid[p_slotColumn][row] = pieceVO.pieceOwnerId;
 				_piecesOnBoard++;
 				updateScore( pieceVO );
-				_gameLayer.drawPiece( new Piece( int(pieceVO.pieceOwnerId) ), p_slotColumn, row );
+				_gameLayer.drawPiece( pieceVO, p_slotColumn, row );
 			}
 			else
 			{

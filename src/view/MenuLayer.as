@@ -15,6 +15,8 @@ package view
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.PerspectiveProjection;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import interfaces.IView;
 	
@@ -59,8 +61,7 @@ package view
 			
 			_menuContainer = new Sprite();
 			addChild(_menuContainer);
-			_menuContainer.x = 200;
-			_menuContainer.y = 200;
+			
 			
 			Component.initStage( stage );
 			
@@ -81,6 +82,8 @@ package view
 			_menuContainer.addChild( _mainMenuUI );
 			_menuUIHistory.unshift( _mainMenuUI );
 			
+			_menuContainer.x = stage.stageWidth/2;
+			_menuContainer.y = stage.stageHeight/2
 		}
 		
 		private function eventForward( e:ViewEvent ):void
@@ -167,6 +170,25 @@ package view
 		private function disableCurrentMenuUI():void
 		{
 			_menuUIHistory[0].enabled = false;
+		}
+		
+		public function ReflowLayout():void
+		{
+			var bounds:Rectangle = _menuContainer.getBounds( _menuContainer );
+			
+			_menuContainer.x = stage.stageWidth/2;
+			_menuContainer.y = stage.stageHeight/2
+				
+			_menuContainer.scaleX = _menuContainer.scaleY = (stage.stageWidth * .9) / (bounds.width) ;
+			
+			
+			if(  (_menuContainer.getBounds( this ).height) / (stage.stageHeight)   > .9  )
+			{
+				_menuContainer.scaleY = _menuContainer.scaleX =  (stage.stageHeight * .9) / (bounds.height);
+			}
+			
+			// for 3d transforms
+			root.transform.perspectiveProjection.projectionCenter = new Point( _menuContainer.x, _menuContainer.y );
 		}
 	}
 }

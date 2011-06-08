@@ -15,8 +15,8 @@ package view.menuui
 								<Panel id="loadGameMenu" x="-60" y="-100" width="120" height="200">
 							        <VBox x="10" y="40">
 							            <Label x="25" text="Continue" />
-							            <PushButton id="loadFromSharedObject" label="Previous Game" />
-							            <PushButton id="loadExternalFile" label="Choose File" />
+							            <PushButton id="loadFromSharedObject" enabled="false" label="Previous Game" />
+							            <PushButton id="loadExternalFile" enabled="false" label="Choose File" />
 							            <PushButton id="loadGameMenuToPreviousMenu" label="Back" />
 							        </VBox>
 							    </Panel>

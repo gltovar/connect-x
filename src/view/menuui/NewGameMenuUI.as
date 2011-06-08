@@ -15,9 +15,9 @@ package view.menuui
 								<Panel id="newGameMenu" x="-60" y="-100" width="120" height="200">
 							        <VBox x="10" y="25">
 							            <Label x="25" text="New Game" />
-							            <PushButton id="newGameMenuToNewSinglePlayerGameMenu" label="Single Player" />
+							            <PushButton id="newGameMenuToNewSinglePlayerGameMenu" label="Single Player" enabled="false" />
 							            <PushButton id="newGameMenuToNewLocalMultiplayerGameMenu" label="Local Multiplayer" />
-							            <PushButton id="newGameMenuToNewOnlineMultiplayerGameMenu" label="Online Multiplayer" />
+							            <PushButton id="newGameMenuToNewOnlineMultiplayerGameMenu" label="Online Multiplayer" enabled="false"/>
 							            <PushButton id="newGameMenuToPreviousMenu" label="Back" />
 							        </VBox>
 							    </Panel>

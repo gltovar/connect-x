@@ -8,6 +8,8 @@ package
 	import event.ViewEvent;
 	
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
@@ -89,19 +91,27 @@ package
 		
 		private function init():void
 		{	
-			stage.frameRate = 60;
+			stage.frameRate = 30;
+			
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
+			
 			
 			_gameStateControllerStack = new Vector.<AbstractController>;
 			
 			defaultGameVO();
 			
-			_gameLayer = new GameLayer();
+			_gameLayer = new GameLayer(_gameVO);
 			_menuLayer = new MenuLayer(_gameVO);
 			_hudLayer = new HUDLayer();
 			
 			addChild( _gameLayer );
-			_gameLayer.x = 30;
-			_gameLayer.y = 30;
+			
+			stage.addEventListener( Event.RESIZE, onStageResize );
+			
+			//_gameLayer.x = 50;
+			//_gameLayer.y = 50;
 			
 			_gameLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
 			
@@ -117,6 +127,14 @@ package
 			
 			addEventListener(Event.ENTER_FRAME, gameLoop, false, 0, false);
 			
+			
+		}
+		
+		private function onStageResize(e:Event):void
+		{
+			trace( 'w: ' + stage.stageWidth + ', h: ' + stage.stageHeight );
+			_gameLayer.ReflowLayout();
+			_menuLayer.ReflowLayout();
 		}
 		
 		private function initGameControllers():void

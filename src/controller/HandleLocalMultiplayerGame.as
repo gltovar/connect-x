@@ -4,6 +4,7 @@ package controller
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
+	import flash.utils.getTimer;
 	
 	import interfaces.IController;
 	import interfaces.IModel;
@@ -61,21 +62,30 @@ package controller
 			
 			_abstractGameEngine = new GameEngine(_gameLayer, _gameVO);
 			_gameLayer.addEventListener( MouseEvent.CLICK, onMouseClick, false, 0, true );
-			
+			_gameLayer.updateOutputLabel( _playerTurnOrder[0].playerName + "'s turn");
 		}
 		
+		
+		private var _lastClick:Number = 0;
+		private var _minimumWaitTime:Number = 200;
 		/**
-		 * Column detection based on mouse position. 
+		 * The controller should not be dealing with UI like this... very ugly stuff right here
 		 * @param e
 		 * 
 		 */		
 		private function onMouseClick(e:MouseEvent):void
 		{
-			trace( int(_gameLayer.mouseX/20) + ", " + int(_gameLayer.mouseY/20) );
-			_abstractGameEngine.addPieceToSlot(_playerTurnOrder[0].pieces.shift(), int(_gameLayer.mouseX/20) );
-			
-			_playerTurnOrder.push(_playerTurnOrder.shift());
-			
+			trace( _lastClick + _minimumWaitTime + " " + getTimer() );
+			if(_lastClick+_minimumWaitTime < getTimer() )
+			{
+				//trace( int(_gameLayer.mouseX/20) + ", " + int(_gameLayer.mouseY/20) );
+				
+				_abstractGameEngine.addPieceToSlot(_playerTurnOrder[0].pieces.shift(), int(_gameLayer.mouseX/ 30) );
+				
+				_playerTurnOrder.push(_playerTurnOrder.shift());
+				_gameLayer.updateOutputLabel( _playerTurnOrder[0].playerName + "'s turn");
+				_lastClick = getTimer();
+			}
 		}
 		
 		override public function stopController():void
