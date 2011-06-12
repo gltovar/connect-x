@@ -228,8 +228,8 @@ package view
 		
 		public function reflowView(p_viewLayoutVO:ViewLayoutVO):void
 		{
-			DisplayUtils.fitIntoRect( _boardContainer, p_viewLayoutVO.toRectangle(), false, DisplayUtilsAlignment.MIDDLE, true);
-			trace( _boardContainer.scaleX + ", " + _boardContainer.scaleY );
+			DisplayUtils.fitIntoRect( this, p_viewLayoutVO.toRectangle(), false, DisplayUtilsAlignment.MIDDLE, true);
+			//trace( _boardContainer.scaleX + ", " + _boardContainer.scaleY );
 		}
 		
 		public function drawPiece( p_pieceArt:PieceVO,  p_column:Number, p_row:Number ):void
