@@ -15,6 +15,8 @@ package event
 		
 		public static const SAVE_GAME_TO_SHARED_OBJECT:String = "saveGameToSharedObject";
 		public static const SAVE_GAME_TO_EXTERNAL_FILE:String = "saveGameToExternalFile";
+		
+		public static const REFLOW_LAYOUT:String = "reflowLayout";
 
 		private var _action:String;
 		public function get action():String { return _action; }

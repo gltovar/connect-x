@@ -16,6 +16,7 @@ package
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getQualifiedSuperclassName;
+	import flash.utils.setTimeout;
 	
 	import interfaces.IController;
 	import interfaces.IModel;
@@ -29,6 +30,7 @@ package
 	import view.GameLayer;
 	import view.HUDLayer;
 	import view.MenuLayer;
+	import view.ViewContainer;
 	
 	/**
 	 * Connect 4 code challenge, in progress.
@@ -47,12 +49,15 @@ package
 	 * @author gltovar85
 	 * 
 	 */	
+	
+	[SWF(width="800", height="480", backgroundColor="#ffffff", frameRate="30")]
 	public class Main extends Sprite
 	{
 		private var _gameVO:GameVO;
 		private var _gameLayer:GameLayer;
 		private var _menuLayer:MenuLayer;
 		private var _hudLayer:HUDLayer;
+		private var _viewContainer:ViewContainer;
 		
 		private var _gameState:GameState;
 		
@@ -91,7 +96,6 @@ package
 		
 		private function init():void
 		{	
-			stage.frameRate = 30;
 			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -102,24 +106,17 @@ package
 			
 			defaultGameVO();
 			
+			_viewContainer = new ViewContainer();
+			_viewContainer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true );
+			addChild( _viewContainer );
+			
 			_gameLayer = new GameLayer(_gameVO);
 			_menuLayer = new MenuLayer(_gameVO);
 			_hudLayer = new HUDLayer();
 			
-			addChild( _gameLayer );
-			
-			stage.addEventListener( Event.RESIZE, onStageResize );
-			
-			//_gameLayer.x = 50;
-			//_gameLayer.y = 50;
-			
-			_gameLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
-			
-			addChild( _hudLayer ); 
-			addChild( _menuLayer );
-			
-			_hudLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
-			_menuLayer.addEventListener( ViewEvent.PERFORM_ACTION, onPerformActionRequest, false, 0, true);
+			_viewContainer.addLayer( _gameLayer );
+			_viewContainer.addLayer( _menuLayer );
+			_viewContainer.addLayer( _hudLayer );
 			
 			_gameState = GameState.INIT;
 			
@@ -127,14 +124,19 @@ package
 			
 			addEventListener(Event.ENTER_FRAME, gameLoop, false, 0, false);
 			
-			
+			setTimeout( reflowLayout, 200 );
+		}
+		
+		private function reflowLayout():void
+		{
+			_viewContainer.reflowLayout();
 		}
 		
 		private function onStageResize(e:Event):void
 		{
-			trace( 'w: ' + stage.stageWidth + ', h: ' + stage.stageHeight );
+			/*trace( 'w: ' + stage.stageWidth + ', h: ' + stage.stageHeight );
 			_gameLayer.ReflowLayout();
-			_menuLayer.ReflowLayout();
+			_menuLayer.ReflowLayout();*/
 		}
 		
 		private function initGameControllers():void
@@ -163,6 +165,9 @@ package
 			{
 				case ViewEvent.NEW_LOCAL_MULTIPLAYER_GAME:
 					queueNewState( GameState.CREATE_NEW_GAME );
+					break;
+				case ViewEvent.REFLOW_LAYOUT:
+					_viewContainer.reflowLayout();
 					break;
 			}
 		}

@@ -5,8 +5,10 @@ package view.menuui
 	import com.bit101.utils.MinimalConfigurator;
 	
 	import event.MenuUIEvent;
+	import event.ViewEvent;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import model.GameVO;

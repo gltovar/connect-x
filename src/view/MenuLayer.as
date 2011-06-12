@@ -10,6 +10,7 @@ package view
 	import event.MenuUIEvent;
 	import event.ViewEvent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -21,6 +22,10 @@ package view
 	import interfaces.IView;
 	
 	import model.GameVO;
+	import model.ViewLayoutVO;
+	
+	import uk.soulwire.utils.display.DisplayUtils;
+	import uk.soulwire.utils.display.DisplayUtilsAlignment;
 	
 	import view.menuui.AbstractMenuUI;
 	import view.menuui.LoadMenuUI;
@@ -48,10 +53,29 @@ package view
 		private var _optionsMenuUI:AbstractMenuUI;
 		private var _newLocalMultiplayerGameMenuUI:AbstractMenuUI;
 		
+		private var _viewLayoutVOs:Vector.<ViewLayoutVO>;
+		public function get viewLayoutVOs():Vector.<ViewLayoutVO> { return _viewLayoutVOs; }
+		
 		public function MenuLayer(p_gameVO:GameVO)
 		{
+			_viewLayoutVOs = new Vector.<ViewLayoutVO>;
+			_viewLayoutVOs.push( new ViewLayoutVO( ViewLayoutVO.LAYOUT_ORIENTATION_HORIZONTAL, .5, .5, .85, .85 ) );
+			_viewLayoutVOs.push( new ViewLayoutVO( ViewLayoutVO.LAYOUT_ORIENTATION_VERTICAL, .5, .5, .85 , .85 ) );
+			
 			_gameVO = p_gameVO;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		public function asDisplayObject():DisplayObject { return this; }
+		
+		public function reflowView(p_viewLayoutVO:ViewLayoutVO):void
+		{
+			DisplayUtils.fitIntoRect( _menuContainer, p_viewLayoutVO.toRectangle(), false, DisplayUtilsAlignment.MIDDLE, true);
+			
+			_menuContainer.x = p_viewLayoutVO.x;
+			_menuContainer.y = p_viewLayoutVO.y;
+			
+			root.transform.perspectiveProjection.projectionCenter = new Point( _menuContainer.x, _menuContainer.y );
 		}
 		
 		private function onAddedToStage(e:Event):void
@@ -84,6 +108,8 @@ package view
 			
 			_menuContainer.x = stage.stageWidth/2;
 			_menuContainer.y = stage.stageHeight/2
+				
+			//dispatchEvent( new ViewEvent( ViewEvent.PERFORM_ACTION, ViewEvent.REFLOW_LAYOUT ) );
 		}
 		
 		private function eventForward( e:ViewEvent ):void
@@ -170,25 +196,6 @@ package view
 		private function disableCurrentMenuUI():void
 		{
 			_menuUIHistory[0].enabled = false;
-		}
-		
-		public function ReflowLayout():void
-		{
-			var bounds:Rectangle = _menuContainer.getBounds( _menuContainer );
-			
-			_menuContainer.x = stage.stageWidth/2;
-			_menuContainer.y = stage.stageHeight/2
-				
-			_menuContainer.scaleX = _menuContainer.scaleY = (stage.stageWidth * .9) / (bounds.width) ;
-			
-			
-			if(  (_menuContainer.getBounds( this ).height) / (stage.stageHeight)   > .9  )
-			{
-				_menuContainer.scaleY = _menuContainer.scaleX =  (stage.stageHeight * .9) / (bounds.height);
-			}
-			
-			// for 3d transforms
-			root.transform.perspectiveProjection.projectionCenter = new Point( _menuContainer.x, _menuContainer.y );
 		}
 	}
 }

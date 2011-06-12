@@ -12,6 +12,8 @@ package view
 	
 	import com.bit101.components.Label;
 	
+	import event.ViewEvent;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -21,6 +23,10 @@ package view
 	
 	import model.GameVO;
 	import model.PieceVO;
+	import model.ViewLayoutVO;
+	
+	import uk.soulwire.utils.display.DisplayUtils;
+	import uk.soulwire.utils.display.DisplayUtilsAlignment;
 	
 	import view.gamerenderer.PhysicsGameRenderer;
 
@@ -54,11 +60,22 @@ package view
 		
 		private var _outputLabel:Label;
 		
+		private var _viewLayoutVOs:Vector.<ViewLayoutVO>;
+		public function get viewLayoutVOs():Vector.<ViewLayoutVO> { return _viewLayoutVOs; }
+		
 		public function GameLayer(p_gameVO:GameVO)
 		{
 			_gameVO = p_gameVO;
+			
+			_viewLayoutVOs = new Vector.<ViewLayoutVO>;
+			_viewLayoutVOs.push( new ViewLayoutVO( ViewLayoutVO.LAYOUT_ORIENTATION_HORIZONTAL, .3, 0, .70, 1 ) );
+			_viewLayoutVOs.push( new ViewLayoutVO( ViewLayoutVO.LAYOUT_ORIENTATION_VERTICAL, 0, .3, 1 , .70 ) );
+		
+			
 			addEventListener( Event.ADDED_TO_STAGE, initLayers );
 		}
+		
+		public function asDisplayObject():DisplayObject { return this; }
 		
 		private function initLayers(e:Event):void
 		{
@@ -206,7 +223,13 @@ package view
 				body.CreateFixture(fixtureDef);
 			}
 			
-			ReflowLayout();
+			dispatchEvent( new ViewEvent( ViewEvent.PERFORM_ACTION, ViewEvent.REFLOW_LAYOUT) );
+		}
+		
+		public function reflowView(p_viewLayoutVO:ViewLayoutVO):void
+		{
+			DisplayUtils.fitIntoRect( _boardContainer, p_viewLayoutVO.toRectangle(), false, DisplayUtilsAlignment.MIDDLE, true);
+			trace( _boardContainer.scaleX + ", " + _boardContainer.scaleY );
 		}
 		
 		public function drawPiece( p_pieceArt:PieceVO,  p_column:Number, p_row:Number ):void
@@ -227,6 +250,7 @@ package view
 		
 		public function ReflowLayout():void
 		{
+			/*
 			var bounds:Rectangle = this.getBounds(this);
 			trace("gameUI:" + this.getBounds(this));
 			
@@ -243,9 +267,7 @@ package view
 			
 			this.x = stage.stageWidth/2 - (bounds.width * this.scaleX)/2
 			this.y = stage.stageHeight/2 - (bounds.height * this.scaleY)/2
-			
-			//_boardContainer.x = stage.stageWidth/2 - (bounds.width * _boardContainer.scaleX)/2;
-			//_boardContainer.y = stage.stageHeight/2 - (bounds.height * _boardContainer.scaleY)/2;
+			*/
 		}
 		
 		public function updateOutputLabel(p_output:String):void
