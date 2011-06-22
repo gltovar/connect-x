@@ -235,7 +235,7 @@ package view
 		public function drawPiece( p_pieceArt:PieceVO,  p_column:Number, p_row:Number ):void
 		{
 			
-			trace( 'at draw piece' );
+
 			var piece:Piece = new Piece( p_pieceArt );
 			
 			piece.pieceB2BodyDef.position.x = ( (p_column * _columnWidth) + ( Piece.RADIUS + (Math.random()*2) ) - 1  ) / _pixelsPerMeter;

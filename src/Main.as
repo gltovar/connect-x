@@ -100,8 +100,6 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			
-			
 			_gameStateControllerStack = new Vector.<AbstractController>;
 			
 			defaultGameVO();
@@ -112,11 +110,11 @@ package
 			
 			_gameLayer = new GameLayer(_gameVO);
 			_menuLayer = new MenuLayer(_gameVO);
-			_hudLayer = new HUDLayer();
+			_hudLayer = new HUDLayer(_gameVO);
 			
 			_viewContainer.addLayer( _gameLayer );
-			_viewContainer.addLayer( _menuLayer );
 			_viewContainer.addLayer( _hudLayer );
+			_viewContainer.addLayer( _menuLayer );
 			
 			_gameState = GameState.INIT;
 			
